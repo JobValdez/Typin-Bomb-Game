@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.game-container {
+    width: 588px;
+    height: 354px;
+    background-image: url(../img/city-background.jpg);
+    margin: auto;
+    margin-top: 50px;
+}
+
+.current-letter {
+    background-color: rgb(255, 45, 45);
+}
+
+.done {
+    color: rgb(189, 189, 189);
+}
+
+.hidden {
+    display: none;
+}
+
+.displayBlock{
+    display: block;
+}
+
+#typing{
+    font-size: 20px;
+    align-items: center;
+    text-align: center;
+}
