@@ -3,6 +3,8 @@ const ctx = canvas.getContext("2d");
 const typingDiv = document.getElementById("typing");
 const startBtn = document.getElementById("startGame");
 const tryAgainBtn = document.getElementById("tryAgain");
+const currentLetterSpan = document.getElementsByClassName("current-letter").value;
+const element = document.getElementById("bomb");
 
 const pharagraphs = [
     'Just weeks before the US dropped the most' , 
@@ -21,12 +23,31 @@ const pharagraphs = [
 
 // const text = '"This target is an urban industrial area with a population of 1,000,000," the minutes from the meeting note. They also described the people of Kyoto as "more apt to appreciate the significance of such a weapon as the gadget". "Kyoto was seen as an ideal target by the military because it had not been bombed at all, so many of the industries were relocated and some major factories were there," says Alex Wellerstein, who is a historian of science at the Stevens Institute of Technology.';
 
-console.log(ctx);
+let bombXposition = 230;
+let bombYposition = -100;
 
-let bombXposition = 260;
-let bombYposition = 0;
+function theBomb(){
+        ctx.drawImage(bomb, bombXposition, bombYposition);
+    }
 
 const startGame = () =>{
+
+    function bombDroppingMovement() {
+        let bombTime = setInterval(frame, 1000);
+        function frame() {
+            if (bombYposition >= 100) {
+            clearInterval(bombTime);
+            alert("You lost");
+            tryAgainBtn.style.display = "block";
+            } else {
+            bombYposition = bombYposition+ 10;
+            theBomb();
+            }
+        }
+    }
+
+    bombDroppingMovement(); 
+
 
     typingDiv.innerText = "";
 
@@ -38,7 +59,6 @@ const startGame = () =>{
         const span = document.createElement('span');
         span.innerText =char;
         typingDiv.appendChild(span);
-        console.log(char);
         return span;
     })
 
@@ -46,30 +66,25 @@ const startGame = () =>{
     let currentLetter = characters[cursorIndex];
     currentLetter.classList.add("current-letter");
 
-    document.addEventListener("keydown", ({ key })=>{
+    const keydown = ({ key })=>{
         if (key === currentLetter.innerText){
             currentLetter.classList.remove("current-letter");
             currentLetter.classList.add("done");
             currentLetter = characters[++cursorIndex];
             console.log(bombXposition);
-
-            let bomb = new Image();
-            bomb.src = "img/missile-.png";
-
-            bomb.onload = function () {
-            ctx.drawImage(bomb, bombXposition, bombYposition = bombYposition -5, bomb.width/2, bomb.height/2);
-            bomb.src = "#";        
-            }
+            bombYposition = bombYposition -2;
         }
 
         if(cursorIndex >= characters.length){
             console.log("se acabo el parrafo");
+            document.removeEventListener("keydown", keydown);
             return startGame();
         }
 
         currentLetter.classList.add("current-letter");
 
-    });
+    }
+    document.addEventListener("keydown", keydown);
 
     tryAgainBtn.classList.add("displayBlock");
 };
