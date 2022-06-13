@@ -3,8 +3,7 @@ const ctx = canvas.getContext("2d");
 const typingDiv = document.getElementById("typing");
 const startBtn = document.getElementById("startGame");
 const tryAgainBtn = document.getElementById("tryAgain");
-const currentLetterSpan = document.getElementsByClassName("current-letter").value;
-const element = document.getElementById("bomb");
+const bombImage = document.getElementById("bomb");
 
 const pharagraphs = [
     'Just weeks before the US dropped the most' , 
@@ -27,31 +26,31 @@ let bombXposition = 230;
 let bombYposition = -100;
 
 function theBomb(){
-        ctx.drawImage(bomb, bombXposition, bombYposition);
-    }
+    ctx.drawImage(bomb, bombXposition, bombYposition);
+}
 
-const startGame = () =>{
-
-    function bombDroppingMovement() {
-        let bombTime = setInterval(frame, 1000);
-        function frame() {
-            if (bombYposition >= 100) {
+function bombDroppingMovement() {
+    let bombTime = setInterval(frame, 500);
+    function frame() {
+        theBomb();
+        if (bombYposition >= 100) {
             clearInterval(bombTime);
             alert("You lost");
             tryAgainBtn.style.display = "block";
-            } else {
+        } else {
             bombYposition = bombYposition+ 10;
-            theBomb();
-            }
         }
     }
+}
+
+const startGame = () =>{
 
     bombDroppingMovement(); 
+    typingProcess();
 
-
-    typingDiv.innerText = "";
-
-    startBtn.classList.add("hidden");
+    function typingProcess (){
+        typingDiv.innerText = "";
+        startBtn.classList.add("hidden");
 
     const text = pharagraphs[parseInt(Math.random() * pharagraphs.length)];
 
@@ -71,22 +70,19 @@ const startGame = () =>{
             currentLetter.classList.remove("current-letter");
             currentLetter.classList.add("done");
             currentLetter = characters[++cursorIndex];
-            console.log(bombXposition);
             bombYposition = bombYposition -2;
         }
 
         if(cursorIndex >= characters.length){
-            console.log("se acabo el parrafo");
             document.removeEventListener("keydown", keydown);
-            return startGame();
+        return typingProcess();
         }
-
         currentLetter.classList.add("current-letter");
-
     }
     document.addEventListener("keydown", keydown);
 
     tryAgainBtn.classList.add("displayBlock");
+    };
 };
 
 const tryAgain = () =>{
