@@ -12,6 +12,7 @@
     margin-top: 50px;
     background-size: contain;
     background-repeat: no-repeat;
+    z-index: -1;
 }
 
 .current-letter {
@@ -42,4 +43,12 @@
 
 #tryAgain {
     display: none;
+}
+
+#typing {
+    align-items: center;
+}
+
+#startGame {
+    padding: 10px;
 }

@@ -6,6 +6,7 @@ const tryAgainBtn = document.getElementById("tryAgain");
 const bombImage = document.getElementById("bomb");
 const containerDiv = document.getElementById("main-container");
 const backgroundDiv = document.getElementById("selectBagroundDiv");
+const apocaliptyImg = document.getElementById("apocaliptyImg");
 
 const pharagraphs = [
     'Just weeks before the US dropped the most' , 
@@ -24,24 +25,44 @@ const pharagraphs = [
 
 // const text = '"This target is an urban industrial area with a population of 1,000,000," the minutes from the meeting note. They also described the people of Kyoto as "more apt to appreciate the significance of such a weapon as the gadget". "Kyoto was seen as an ideal target by the military because it had not been bombed at all, so many of the industries were relocated and some major factories were there," says Alex Wellerstein, who is a historian of science at the Stevens Institute of Technology.';
 
-let bombXposition = 230;
+let bombXposition = 220;
 let bombYposition = -100;
-let bombDroppingFrecuency = 900;
+let bombDroppingFrecuency = 700;
+let bombRadio = 10;
 
 function theBomb(){
     ctx.drawImage(bomb, bombXposition, bombYposition);
 }
-
+ctx.save();
 function bombDroppingMovement() {
     let bombTime = setInterval(frame, bombDroppingFrecuency);
     function frame() {
         theBomb();
         if (bombYposition >= 100) {
             clearInterval(bombTime);
-            alert("You lost");
+            // alert("Game Over");
             tryAgainBtn.style.display = "block";
-        } else {
+        } 
+        else {
             bombYposition = bombYposition+ 10;
+        }
+    }
+}
+
+function Explotion() {
+    let bombExplotion = setInterval(frame, -100);
+    function frame() {
+        if (bombYposition >= 100 && bombRadio <=250){
+            ctx.beginPath();
+            ctx.arc(290, 300, bombRadio++, 0, 1*Math.PI,1.8*Math.PI);
+            ctx.fillStyle = "#db7103";
+            ctx.fill();
+        }
+        else if(bombRadio >= 250){
+            clearInterval(bombExplotion);
+            typingDiv.style.display = "none";
+            bombImage.style.display  = "none";
+            setInterval(function () {ctx.drawImage(apocaliptyImg, 0,0, 588, 354);}, 1000);
         }
     }
 }
@@ -75,7 +96,7 @@ const startGame = () =>{
 
     bombDroppingMovement(); 
     typingProcess();
-
+    Explotion();
     function typingProcess (){
         typingDiv.innerText = "";
         startBtn.classList.add("hidden");
@@ -109,8 +130,6 @@ const startGame = () =>{
         currentLetter.classList.add("current-letter");
     }
     document.addEventListener("keydown", keydown);
-
-    tryAgainBtn.classList.add("displayBlock");
     };
 };
 
