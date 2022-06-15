@@ -8,23 +8,40 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+        <header>
+                <h2>Be a Heroe!</h2>
+                <h3>Save as much people as you can!</h3><br/>
+                <p><strong>Instructions:</strong></p>
+                <p>Type the sentences with your keyboard as fast as you can, <br/> each letter is one person saved. Go ahead and be a Heroe!</p>
+            </header>
         <div id="main-container">
+
         <canvas id="board" width="588px" height="354px"></canvas>
         <img src="img/missile-.png" alt="Bomb" id="bomb">
         <img src="img/apocalyptic-city1.jpg" alt="Apocalyptic City" id="apocaliptyImg" style="display: none;"/>
         <div id="typing"></div>
             <div class="gameSettings">
+
                 <div id="selectBagroundDiv">
-                    <label for="landscape">Choose the Landscape:</label>
-                    
-                    <select name="landscape" id="selectBackgrounds">
+                    <label for="landscape"><strong>Choose the Landscape:</strong></label>
+                    <select name="landscape" id="selectBackgrounds" class="selectButtons">
                         <option value="city">City</option>
                         <option value="nomada">Nomada Town</option>
                         <option value="pixel">Pixel Art Night City</option>
                         <option value="roof">Roof Top View</option>
                         <option value="myangone">Myangone Town</option>
+                        <option value="cartoon">Cartoon</option>
                     </select>
                 </div>
+                <div id="dificultyDiv">
+                    <label for="dificulty"><strong>Choose the dificulty:</strong></label>
+                    <select name="dificulty" id="dificulty" class="selectButtons">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                    </select>
+                </div>
+
                 <button onclick="startGame()" id="startGame">Click to Start the Game</button>
                 <button onclick="tryAgain();" id="tryAgain">Try Again</button>
             </div>

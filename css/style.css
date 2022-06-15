@@ -2,6 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 #main-container {
@@ -9,7 +16,7 @@
     height: 354px;
     background-image: url(../img/city-background.jpg);
     margin: auto;
-    margin-top: 50px;
+    margin-top: 10px;
     background-size: contain;
     background-repeat: no-repeat;
     z-index: -1;
@@ -43,12 +50,41 @@
 
 #tryAgain {
     display: none;
+    text-align: center;
+    align-items: center;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border:  dotted 3px black;
+}
+#tryAgain:hover, #startGame:hover{
+    border:  dotted 4px green;
+    background-color: bisque;
 }
 
 #typing {
     align-items: center;
 }
 
+#selectBagroundDiv{
+    margin: 5px;
+}
+
+.selectButtons{
+    font-size: 20px;
+    padding: 0px;
+}
 #startGame {
     padding: 10px;
+    margin: 5px;
+    font-size: 20px;
+    border: dotted black 3px;
+    margin-top: 15px;
+}
+
+.gameSettings {
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
 }

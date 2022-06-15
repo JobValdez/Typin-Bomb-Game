@@ -6,6 +6,7 @@ const tryAgainBtn = document.getElementById("tryAgain");
 const bombImage = document.getElementById("bomb");
 const containerDiv = document.getElementById("main-container");
 const backgroundDiv = document.getElementById("selectBagroundDiv");
+const dificultyDiv = document.getElementById("dificultyDiv");
 const apocaliptyImg = document.getElementById("apocaliptyImg");
 
 const pharagraphs = [
@@ -49,20 +50,23 @@ function bombDroppingMovement() {
     }
 }
 
-function Explotion() {
+function explotion() {
     let bombExplotion = setInterval(frame, -100);
     function frame() {
         if (bombYposition >= 100 && bombRadio <=250){
             ctx.beginPath();
             ctx.arc(290, 300, bombRadio++, 0, 1*Math.PI,1.8*Math.PI);
-            ctx.fillStyle = "#db7103";
+            var grd = ctx.createRadialGradient(75, 250, 5, 360, 60, 500);
+            grd.addColorStop(0, "red");
+            grd.addColorStop(1, "white");
+            ctx.fillStyle = grd;
             ctx.fill();
         }
         else if(bombRadio >= 250){
             clearInterval(bombExplotion);
             typingDiv.style.display = "none";
             bombImage.style.display  = "none";
-            setInterval(function () {ctx.drawImage(apocaliptyImg, 0,0, 588, 354);}, 1000);
+            setInterval(function () {ctx.drawImage(apocaliptyImg, 0,0, 588, 354);}, 700);
         }
     }
 }
@@ -86,21 +90,42 @@ const bgSelection = () =>{
     if(optionSelected == "myangone"){
         containerDiv.style.backgroundImage = "url(img/Myangone-town.jpg)";
     }
-    
+    if(optionSelected == "cartoon"){
+        containerDiv.style.backgroundImage = "url(img/cartoon-city.jpg)";
+    }
 }
 selectBackground.onchange = bgSelection;
 bgSelection();
+
+
+// Dificulty Selection
+const dificulty = document.getElementById("dificulty");
+const dificultySelection = () =>{
+    const dificultySelected = dificulty.options[dificulty.selectedIndex].value;
+    if(dificultySelected == "easy"){
+        bombDroppingFrecuency = 1000;
+    }
+    if(dificultySelected == "medium"){
+        bombDroppingFrecuency = 600;
+    }
+    if(dificultySelected == "hard"){
+        bombDroppingFrecuency = 200;
+    }
+}
+dificulty.onchange = dificultySelection;
+dificultySelection();
 
 //Game process
 const startGame = () =>{
 
     bombDroppingMovement(); 
     typingProcess();
-    Explotion();
+    explotion();
     function typingProcess (){
         typingDiv.innerText = "";
         startBtn.classList.add("hidden");
         backgroundDiv.classList.add("hidden");
+        dificultyDiv.classList.add("hidden");
 
     const text = pharagraphs[parseInt(Math.random() * pharagraphs.length)];
 
