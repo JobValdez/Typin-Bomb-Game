@@ -4,6 +4,8 @@ const typingDiv = document.getElementById("typing");
 const startBtn = document.getElementById("startGame");
 const tryAgainBtn = document.getElementById("tryAgain");
 const bombImage = document.getElementById("bomb");
+const containerDiv = document.getElementById("main-container");
+const backgroundDiv = document.getElementById("selectBagroundDiv");
 
 const pharagraphs = [
     'Just weeks before the US dropped the most' , 
@@ -24,13 +26,14 @@ const pharagraphs = [
 
 let bombXposition = 230;
 let bombYposition = -100;
+let bombDroppingFrecuency = 900;
 
 function theBomb(){
     ctx.drawImage(bomb, bombXposition, bombYposition);
 }
 
 function bombDroppingMovement() {
-    let bombTime = setInterval(frame, 500);
+    let bombTime = setInterval(frame, bombDroppingFrecuency);
     function frame() {
         theBomb();
         if (bombYposition >= 100) {
@@ -43,6 +46,31 @@ function bombDroppingMovement() {
     }
 }
 
+// Background Selection
+const selectBackground = document.getElementById("selectBackgrounds");
+const bgSelection = () =>{
+    const optionSelected = selectBackground.options[selectBackground.selectedIndex].value;
+    if(optionSelected == "roof"){
+        containerDiv.style.backgroundImage = "url(img/rooftopViewCity.jpg)";
+    }
+    if(optionSelected == "city"){
+        containerDiv.style.backgroundImage = "url(img/city-background.jpg)";
+    }
+    if(optionSelected == "nomada"){
+        containerDiv.style.backgroundImage = "url(img/nomada-town.jpg)";
+    }
+    if(optionSelected == "pixel"){
+        containerDiv.style.backgroundImage = "url(img/pixel-art-city.png)";
+    }
+    if(optionSelected == "myangone"){
+        containerDiv.style.backgroundImage = "url(img/Myangone-town.jpg)";
+    }
+    
+}
+selectBackground.onchange = bgSelection;
+bgSelection();
+
+//Game process
 const startGame = () =>{
 
     bombDroppingMovement(); 
@@ -51,6 +79,7 @@ const startGame = () =>{
     function typingProcess (){
         typingDiv.innerText = "";
         startBtn.classList.add("hidden");
+        backgroundDiv.classList.add("hidden");
 
     const text = pharagraphs[parseInt(Math.random() * pharagraphs.length)];
 

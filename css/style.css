@@ -4,12 +4,14 @@
     box-sizing: border-box;
 }
 
-.game-container {
+#main-container {
     width: 588px;
     height: 354px;
     background-image: url(../img/city-background.jpg);
     margin: auto;
     margin-top: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .current-letter {

@@ -8,11 +8,22 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <div class="game-container">
+        <div id="main-container">
         <canvas id="board" width="588px" height="354px"></canvas>
         <img src="img/missile-.png" alt="Bomb" id="bomb">
         <div id="typing"></div>
             <div>
+                <div id="selectBagroundDiv">
+                    <label for="landscape">Choose the Landscape:</label>
+                    
+                    <select name="landscape" id="selectBackgrounds">
+                        <option value="city">City</option>
+                        <option value="nomada">Nomada Town</option>
+                        <option value="pixel">Pixel Art Night City</option>
+                        <option value="roof">Roof Top View</option>
+                        <option value="myangone">Myangone Town</option>
+                    </select>
+                </div>
                 <button onclick="startGame()" id="startGame">Click to Start the Game</button>
                 <button onclick="tryAgain();" id="tryAgain">Try Again</button>
             </div>
