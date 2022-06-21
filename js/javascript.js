@@ -3,11 +3,9 @@ const ctx = canvas.getContext("2d");
 const typingDiv = document.getElementById("typing");
 const startBtn = document.getElementById("startGame");
 const tryAgainBtn = document.getElementById("tryAgain");
-const bombImage = document.getElementById("bomb");
 const containerDiv = document.getElementById("main-container");
 const backgroundDiv = document.getElementById("selectBagroundDiv");
 const dificultyDiv = document.getElementById("dificultyDiv");
-const apocaliptyImg = document.getElementById("apocaliptyImg");
 
 const pharagraphs = [
     'Just weeks before the US dropped the most' , 
@@ -24,52 +22,46 @@ const pharagraphs = [
 
 ];
 
+
 // const text = '"This target is an urban industrial area with a population of 1,000,000," the minutes from the meeting note. They also described the people of Kyoto as "more apt to appreciate the significance of such a weapon as the gadget". "Kyoto was seen as an ideal target by the military because it had not been bombed at all, so many of the industries were relocated and some major factories were there," says Alex Wellerstein, who is a historian of science at the Stevens Institute of Technology.';
 
-let bombXposition = 220;
-let bombYposition = -100;
-let bombDroppingFrecuency = 700;
+var bombXposition = 230;
+var bombYposition = -20;
+var bombDroppingFrecuency = 700;
 let bombRadio = 10;
 
-function theBomb(){
-    ctx.drawImage(bomb, bombXposition, bombYposition);
-}
-ctx.save();
+bomb1 = new Image();
+bomb1.src = 'img/bomb1.png';
+
+destroyedCity = new Image();
+destroyedCity.src = 'img/1.webp';
+
 function bombDroppingMovement() {
-    let bombTime = setInterval(frame, bombDroppingFrecuency);
-    function frame() {
+    let bombTime = setInterval(function(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         theBomb();
-        if (bombYposition >= 100) {
+        if (bombYposition >= 220) {
             clearInterval(bombTime);
             // alert("Game Over");
-            tryAgainBtn.style.display = "block";
-        } 
-        else {
-            bombYposition = bombYposition+ 10;
+            ctx.font = "30px Arial";
         }
-    }
+        else {
+            bombYposition += 8
+        }
+    }, bombDroppingFrecuency);
 }
 
-function explotion() {
-    let bombExplotion = setInterval(frame, -100);
-    function frame() {
-        if (bombYposition >= 100 && bombRadio <=250){
-            ctx.beginPath();
-            ctx.arc(290, 300, bombRadio++, 0, 1*Math.PI,1.8*Math.PI);
-            var grd = ctx.createRadialGradient(75, 250, 5, 360, 60, 500);
-            grd.addColorStop(0, "red");
-            grd.addColorStop(1, "white");
-            ctx.fillStyle = grd;
-            ctx.fill();
+// Draw of the BOMB
+function theBomb(){
+    ctx.drawImage(bomb1, bombXposition, bombYposition, 130, 80);
+
+    ///Sound of the bomb explotion.
+    if (bombYposition >= 220 && bombYposition <=228){
+            const explotionSound = new Audio('sounds/bomb-exploding.wav');
+            explotionSound.play();
         }
-        else if(bombRadio >= 250){
-            clearInterval(bombExplotion);
-            typingDiv.style.display = "none";
-            bombImage.style.display  = "none";
-            setInterval(function () {ctx.drawImage(apocaliptyImg, 0,0, 588, 354);}, 700);
-        }
-    }
 }
+
 
 // Background Selection
 const selectBackground = document.getElementById("selectBackgrounds");
@@ -103,10 +95,10 @@ const dificulty = document.getElementById("dificulty");
 const dificultySelection = () =>{
     const dificultySelected = dificulty.options[dificulty.selectedIndex].value;
     if(dificultySelected == "easy"){
-        bombDroppingFrecuency = 1000;
+        bombDroppingFrecuency = 600;
     }
     if(dificultySelected == "medium"){
-        bombDroppingFrecuency = 600;
+        bombDroppingFrecuency = 400;
     }
     if(dificultySelected == "hard"){
         bombDroppingFrecuency = 200;
@@ -118,23 +110,54 @@ dificultySelection();
 //Game process
 const startGame = () =>{
 
-    bombDroppingMovement(); 
+    bombDroppingMovement();
     typingProcess();
     explotion();
+
+    let numberOfLivesSave = 0;
+
+    function explotion() {
+
+    let bombExplotion = setInterval(frame, -100);
+    function frame() {
+
+        if (bombYposition >= 220 && bombRadio <=250 && bombYposition <=260 ){
+            ctx.beginPath();
+            ctx.arc(290, 300, bombRadio++, 0, 1*Math.PI,1.8*Math.PI);
+            var grd = ctx.createRadialGradient(75, 250, 5, 360, 60, 500);
+            grd.addColorStop(0, "red");
+            grd.addColorStop(1, "white");
+            ctx.fillStyle = grd;
+            ctx.fill();
+        }
+        else if(bombRadio >= 250){
+            clearInterval(bombExplotion);
+            typingDiv.style.display = "none";
+            setInterval(function () {ctx.drawImage(destroyedCity, 0,0, 588, 354);
+            ctx.font = "30px Georgia";
+            ctx.fillStyle = "white";
+            ctx.fillText("The city has been destroyed but", 90, 100);
+            ctx.fillText(" you saved: " + numberOfLivesSave + " people", 140, 140);
+            tryAgainBtn.style.display = "block";
+            }, 2000);
+        }
+    }
+}
+
     function typingProcess (){
         typingDiv.innerText = "";
         startBtn.classList.add("hidden");
         backgroundDiv.classList.add("hidden");
         dificultyDiv.classList.add("hidden");
-
-    const text = pharagraphs[parseInt(Math.random() * pharagraphs.length)];
-
-    const characters = text.split('').map(char =>{
-        const span = document.createElement('span');
-        span.innerText =char;
-        typingDiv.appendChild(span);
-        return span;
-    })
+    
+        const text = pharagraphs[parseInt(Math.random() * pharagraphs.length)];
+        
+        const characters = text.split('').map(char =>{
+            const span = document.createElement('span');
+            span.innerText =char;
+            typingDiv.appendChild(span);
+            return span;
+        })
 
     let cursorIndex = 0;
     let currentLetter = characters[cursorIndex];
@@ -145,11 +168,15 @@ const startGame = () =>{
             currentLetter.classList.remove("current-letter");
             currentLetter.classList.add("done");
             currentLetter = characters[++cursorIndex];
-            bombYposition = bombYposition -2;
+            bombYposition = bombYposition -4;
+            numberOfLivesSave = numberOfLivesSave +1;
+            const music = new Audio('sounds/keys.mp3');
+            music.play();
         }
 
         if(cursorIndex >= characters.length){
             document.removeEventListener("keydown", keydown);
+
         return typingProcess();
         }
         currentLetter.classList.add("current-letter");

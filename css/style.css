@@ -44,10 +44,6 @@ header {
     text-align: center;
 }
 
-#bomb {
-    display: none;
-}
-
 #tryAgain {
     display: none;
     text-align: center;
