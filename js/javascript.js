@@ -107,6 +107,29 @@ const dificultySelection = () =>{
 dificulty.onchange = dificultySelection;
 dificultySelection();
 
+/// This event created the Impact Point light where the bomb is going to explode.
+startBtn.addEventListener("click", function(){
+    let impactPoint = setInterval(frame, 200);
+    let lightRadio = 0;
+    function frame() {
+            if (bombYposition >= 220){
+                clearInterval(impactPoint);
+            }
+            else if (lightRadio <=5){
+                ctx.beginPath();
+            ctx.arc(294, 292, lightRadio++, 0, 2*Math.PI);
+            var grd = ctx.createRadialGradient(75, 250, 5, 360, 60, 500);
+            grd.addColorStop(0, "yellow");
+            grd.addColorStop(1, "orange");
+            ctx.fillStyle = grd;
+            ctx.fill();
+            }
+            else if(lightRadio >=5){
+                lightRadio = 0;
+            }           
+        }
+});
+
 //Game process
 const startGame = () =>{
 
@@ -125,8 +148,8 @@ const startGame = () =>{
             ctx.beginPath();
             ctx.arc(290, 300, bombRadio++, 0, 1*Math.PI,1.8*Math.PI);
             var grd = ctx.createRadialGradient(75, 250, 5, 360, 60, 500);
-            grd.addColorStop(0, "red");
-            grd.addColorStop(1, "white");
+            grd.addColorStop(0, "yellow");
+            grd.addColorStop(1, "orange");
             ctx.fillStyle = grd;
             ctx.fill();
         }
