@@ -15,11 +15,17 @@
                 <p>Type the sentences with your keyboard as fast as you can, <br/> each letter is one person saved. Go ahead and be a Hero!</p>
             </header>
         <div id="main-container">
+            <div class="scores-container">
 
+            </div>
         <canvas id="board" width="588px" height="354px"></canvas>
         <div id="typing"></div>
             <div class="gameSettings">
 
+                <div id="playerNameDiv">
+                    <label for="player"><strong>Enter the player name:</strong></label>
+                    <input type="text" id="playerName" name="player">
+                </div>
                 <div id="selectBagroundDiv">
                     <label for="landscape"><strong>Choose the Landscape:</strong></label>
                     <select name="landscape" id="selectBackgrounds" class="selectButtons">
@@ -40,7 +46,9 @@
                     </select>
                 </div>
 
-                <div id="stats"></div>
+                <div id="statsContainer">
+
+                </div>
 
                 <button onclick="startGame()" id="startGame">Click to Start the Game</button>
                 <button onclick="tryAgain();" id="tryAgain">Try Again</button>

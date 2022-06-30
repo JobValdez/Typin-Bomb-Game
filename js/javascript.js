@@ -30,12 +30,15 @@ var bombYposition = -20;
 var bombDroppingFrecuency = 700;
 let bombRadio = 10;
 
+// IMAGENES DIBUJADAS
+
 bomb1 = new Image();
 bomb1.src = 'img/bomb1.png';
 
 destroyedCity = new Image();
 destroyedCity.src = 'img/1.webp';
 
+//VELOCIDAD DE MOVIMIENTO DE LA BOMBA
 function bombDroppingMovement() {
     let bombTime = setInterval(function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -61,6 +64,34 @@ function theBomb(){
             explotionSound.play();
         }
 }
+//SHOW THE RECORD;
+if (localStorage.getItem("players") === null) {
+    console.log("no hay nada en la memoria");
+}else{
+    result=JSON.parse(localStorage.getItem("players"));
+for (const value of result) {
+    function mostrar(){
+
+        ctx.font = "30px Georgia";
+        ctx.fillStyle = "white";
+        ctx.fillText("Last 10 records", 200, 40);
+        ctx.fillText("Player Name", 170, 70);
+        ctx.fillText("Score", 370, 70)
+
+        window.addEventListener("load", function(){
+            y = 80
+            result.forEach(object =>{
+                ctx.font = "25px Georgia";
+                ctx.fillStyle = "white";
+                ctx.fillText(object["player"], 230, y = y+25);
+                ctx.fillText(object["score"], 370, y);
+            });
+        });
+    }
+    mostrar();
+}
+}
+
 
 
 // Background Selection
@@ -137,8 +168,15 @@ const startGame = () =>{
     typingProcess();
     explotion();
 
-    let numberOfLivesSave = 0;
 
+    let numberOfLivesSave = 0;
+    //BOMB EXPLOTION 
+
+    let playerName = document.getElementById("playerName").value;
+            if (playerName == ""){
+                alert("The player must be entered");
+                location.reload();
+            }
     function explotion() {
 
     let bombExplotion = setInterval(frame, -100);
@@ -152,21 +190,36 @@ const startGame = () =>{
             grd.addColorStop(1, "orange");
             ctx.fillStyle = grd;
             ctx.fill();
+            
         }
         else if(bombRadio >= 250){
             clearInterval(bombExplotion);
             typingDiv.style.display = "none";
             setInterval(function () {ctx.drawImage(destroyedCity, 0,0, 588, 354);
-            ctx.font = "30px Georgia";
-            ctx.fillStyle = "white";
-            ctx.fillText("The city has been destroyed but", 90, 100);
-            ctx.fillText(" you saved: " + numberOfLivesSave + " people", 140, 140);
-            tryAgainBtn.style.display = "block";
-            }, 2000);
+                ctx.font = "30px Georgia";
+                ctx.fillStyle = "white";
+                ctx.fillText("The city has been destroyed but", 90, 100);
+                ctx.fillText(" you saved: " + numberOfLivesSave + " people", 140, 140);
+                tryAgainBtn.style.display = "block";
+                }, 2000);
+
+                
+        function saveRecords () {
+            let record = new Map();
+            record = JSON.parse(localStorage.getItem("players"))?JSON.parse(localStorage.getItem("players")):[];
+            
+            record.push({
+                "player":playerName,
+                "score":numberOfLivesSave
+            });
+            localStorage.setItem("players",JSON.stringify(record));
+        };
+    saveRecords();
         }
     }
 }
 
+    // TYPING PROCESS
     function typingProcess (){
         typingDiv.innerText = "";
         startBtn.classList.add("hidden");
@@ -193,6 +246,7 @@ const startGame = () =>{
             currentLetter = characters[++cursorIndex];
             bombYposition = bombYposition -4;
             numberOfLivesSave = numberOfLivesSave +1;
+            
             const music = new Audio('sounds/keys.mp3');
             music.play();
         }
